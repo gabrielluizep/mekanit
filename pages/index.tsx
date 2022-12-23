@@ -29,8 +29,53 @@ export default function Home() {
       </Head>
 
       <main>
-        <div className="max-w-lg">
-          <table className="table-auto w-full">
+        <div className="max-w-lg mx-auto">
+          <div className="flex justify-between w-full mb-4">
+            <div>
+              <div className="flex space-x-2">
+                <p>Nome</p>
+                <p>Cliente</p>
+              </div>
+
+              <div className="flex space-x-2">
+                <p>Fabricante</p>
+                <p>Ford</p>
+              </div>
+
+              <div className="flex space-x-2">
+                <p>Modelo</p>
+                <p>Focus</p>
+              </div>
+
+              <div className="flex space-x-2">
+                <p>Motor</p>
+                <p>1.4</p>
+              </div>
+            </div>
+            <div>
+              <div className="flex space-x-2">
+                <p>Telefone</p>
+                <p>4832324848</p>
+              </div>
+
+              <div className="flex space-x-2">
+                <p>E-mail</p>
+                <p>john@doe.com</p>
+              </div>
+
+              <div className="flex space-x-2">
+                <p>Placa</p>
+                <p>AAA9999</p>
+              </div>
+
+              <div className="flex space-x-2">
+                <p>Quilometragem</p>
+                <p>123456</p>
+              </div>
+            </div>
+          </div>
+
+          <table className="table-auto w-full mb-4">
             <thead>
               <tr>
                 <th className="text-left w-12">Qntd.</th>
@@ -42,9 +87,9 @@ export default function Home() {
             </thead>
             <tbody>
               {fields.map((field, index) => (
-                <tr key={field.id}>
+                <tr className="mb-4" key={field.id}>
                   <td>
-                    <input className="w-full text-left" {...register(`items.${index}.quantity`)} />
+                    <input className="w-full text-center" {...register(`items.${index}.quantity`)} />
                   </td>
                   <td>
                     <input className="w-full text-left" {...register(`items.${index}.description`)} />
@@ -66,7 +111,7 @@ export default function Home() {
           </table>
 
           <button
-            className="w-full outline-dashed rounded-sm hover:opacity-50"
+            className="w-full outline-dashed rounded-sm hover:opacity-50 mb-10"
             onClick={() =>
               append({
                 id: Math.random().toString(),
@@ -80,7 +125,9 @@ export default function Home() {
             +
           </button>
 
-          <button onClick={handleSubmit((data) => console.log(data))}>submit</button>
+          <button className="" onClick={handleSubmit((data) => console.log(data))}>
+            submit
+          </button>
         </div>
       </main>
     </>
