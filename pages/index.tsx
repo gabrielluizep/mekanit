@@ -2,8 +2,10 @@ import { randomBytes } from 'crypto'
 import Head from 'next/head'
 import { useState } from 'react'
 
+import { useFieldArray, useForm } from 'react-hook-form'
+
 interface Item {
-  id: string
+  id: string | null
   quantity: number
   description: string
   unitValue: number
@@ -11,9 +13,8 @@ interface Item {
 }
 
 export default function Home() {
-  const [items, setItems] = useState<Item[]>([
-    { id: '1', quantity: 1, description: 'Filtro de combustível', unitValue: 42, totalValue: 42 },
-  ])
+  const { register, handleSubmit, control } = useForm()
+  const { fields, append, remove } = useFieldArray({ control, name: 'items' })
 
   return (
     <>
@@ -40,25 +41,24 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {items.map((item) => (
-                <tr key={item.id}>
-                  <td className="text-center">
-                    <input className="w-full text-left" type="number" value={item.quantity}></input>
+              {fields.map((field, index) => (
+                <tr key={field.id}>
+                  <td>
+                    <input className="w-full text-left" {...register(`items.${index}.quantity`)} />
                   </td>
-                  <td className="text-left">
-                    <input className="w-full text-left" type="text" value={item.description}></input>
+                  <td>
+                    <input className="w-full text-left" {...register(`items.${index}.description`)} />
                   </td>
-                  <td className="text-right">
-                    <input className="w-full text-right" type="number" value={item.unitValue}></input>
+                  <td>
+                    <input className="w-full text-right" {...register(`items.${index}.unitValue`)} />
                   </td>
-                  <td className="">
-                    <input className="w-full text-right" type="number" value={item.totalValue}></input>
+                  <td>
+                    <input className="w-full text-right" {...register(`items.${index}.totalValue`)} />
                   </td>
-                  <td
-                    className="text-right"
-                    onClick={() => setItems((prev) => prev.filter((i) => i !== item))}
-                  >
-                    <button>x</button>
+                  <td>
+                    <button className="w-full text-right" onClick={() => remove(index)}>
+                      x
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -68,14 +68,19 @@ export default function Home() {
           <button
             className="w-full outline-dashed rounded-sm hover:opacity-50"
             onClick={() =>
-              setItems((prev) => [
-                ...prev,
-                { id: Math.random().toString(), quantity: 1, description: '', unitValue: 0, totalValue: 0 },
-              ])
+              append({
+                id: Math.random().toString(),
+                quantity: 1,
+                description: '',
+                unitValue: 0,
+                totalValue: 0,
+              })
             }
           >
             +
           </button>
+
+          <button onClick={handleSubmit((data) => console.log(data))}>submit</button>
         </div>
       </main>
     </>
